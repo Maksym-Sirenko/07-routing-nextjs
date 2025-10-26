@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { Note } from '@/types/note';
+import { NOTES_CATEGORIES } from './constants';
 
 const API_KEY = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 export const PER_PAGE = 12;
@@ -36,7 +37,7 @@ export const fetchNotes = async ({
     perPage,
   };
 
-  if (tag) {
+  if (tag && NOTES_CATEGORIES.includes(tag)) {
     params.tag = tag;
   }
 
