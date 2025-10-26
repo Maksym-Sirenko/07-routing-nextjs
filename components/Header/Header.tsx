@@ -1,5 +1,6 @@
 import css from './Header.module.css';
 import Link from 'next/link';
+import { ALL_NOTES } from '@/lib/constants';
 
 const Header = () => {
   return (
@@ -13,7 +14,7 @@ const Header = () => {
             <Link href="/">Home</Link>
           </li>
           <li>
-            <Link href={`/notes/filter/${category.id}`}>Notes</Link>
+            <Link href={`/notes/filter/${ALL_NOTES}`}>Notes</Link>
           </li>
         </ul>
       </nav>

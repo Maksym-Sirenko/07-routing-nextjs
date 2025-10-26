@@ -1,17 +1,33 @@
-import Link from 'next/link';
-import { getCategories } from '@/lib/api';
+// app/notes/filter/@sidebar/default.tsx
+'use client';
 
-const NotesSidebar = async () => {
-  const categories = await getCategories();
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { ALL_NOTES, NOTES_CATEGORIES } from '@/lib/constants';
+import css from './default.module.css';
+
+const NotesSidebar = () => {
+  const params = useParams();
+  const currentCategory = params.slug?.[0] || ALL_NOTES;
 
   return (
-    <ul>
-      <li>
-        <Link href={`/notes/filter/all`}>All notes</Link>
+    <ul className={css.menuList}>
+      <li className={css.menuItem}>
+        <Link
+          href="/notes/filter/all"
+          className={`${css.menuLink} ${currentCategory === 'all' ? css.active : ''}`}
+        >
+          All notes
+        </Link>
       </li>
-      {categories.map((category) => (
-        <li key={category.id}>
-          <Link href={`/notes/filter/${category.id}`}>{category.name}</Link>
+      {NOTES_CATEGORIES.map((category) => (
+        <li className={css.menuItem} key={category}>
+          <Link
+            href={`/notes/filter/${category}`}
+            className={`${css.menuLink} ${currentCategory === category ? css.active : ''}`}
+          >
+            {category}
+          </Link>
         </li>
       ))}
     </ul>

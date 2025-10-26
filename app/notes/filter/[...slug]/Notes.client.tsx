@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebouncedCallback } from 'use-debounce';
 import SearchBox from '@/components/SearchBox/SearchBox';
@@ -15,14 +15,25 @@ import css from './Notes.client.module.css';
 interface Props {
   initialSearch?: string;
   initialPage?: number;
+  category?: string;
 }
 
-const NotesClient = ({ initialSearch = '', initialPage = 1 }: Props) => {
+const NotesClient = ({
+  initialSearch = '',
+  initialPage = 1,
+  category = '',
+}: Props) => {
   const [search, setSearch] = useState(initialSearch);
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
   const [page, setPage] = useState(initialPage);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState(category);
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setCurrentCategory(category);
+    setPage(1);
+  }, [category]);
 
   const debounced = useDebouncedCallback((value: string) => {
     setDebouncedSearch(value);
@@ -36,8 +47,13 @@ const NotesClient = ({ initialSearch = '', initialPage = 1 }: Props) => {
   };
 
   const { data, isLoading, isError } = useQuery<FetchNotesResponse, Error>({
-    queryKey: ['notes', debouncedSearch, page],
-    queryFn: () => fetchNotes({ search: debouncedSearch, page }),
+    queryKey: ['notes', debouncedSearch, page, currentCategory],
+    queryFn: () =>
+      fetchNotes({
+        search: debouncedSearch,
+        page,
+        tag: currentCategory,
+      }),
     placeholderData: (previousData) => previousData,
   });
 

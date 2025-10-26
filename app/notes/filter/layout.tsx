@@ -1,15 +1,17 @@
 // app/notes/filter/layout.tsx
 
-type Props = {
+import css from './layout.module.css';
+
+interface Props {
   children: React.ReactNode;
   sidebar: React.ReactNode;
-};
+}
 
 const NotesLayout = ({ children, sidebar }: Props) => {
   return (
-    <section>
-      <aside>{sidebar}</aside>
-      <div>{children}</div>
+    <section className={css.container}>
+      <aside className={css.sidebar}>{sidebar}</aside>
+      <div className={css.notesWrapper}>{children}</div>
     </section>
   );
 };

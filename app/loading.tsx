@@ -1,18 +1,15 @@
-// export default function Loading() {
-//   return <p>Loading, please wait...</p>;
-// }
+// app/loading.tsx
+import css from './loading.module.css';
 
 const Loading = () => {
   return (
-    <div
-      style={{
-        padding: '50px',
-        textAlign: 'center',
-        fontSize: '18px',
-        color: '#666',
-      }}
-    >
-      🔄 Loading, please wait...
+    <div className={css.container}>
+      <div className={css.loader}>
+        <div className={css.dot}></div>
+        <div className={css.dot}></div>
+        <div className={css.dot}></div>
+      </div>
+      <p className={css.text}>Loading notes...</p>
     </div>
   );
 };

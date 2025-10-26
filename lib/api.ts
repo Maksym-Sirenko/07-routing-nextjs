@@ -20,21 +20,38 @@ export interface FetchNotesResponse {
 export const fetchNotes = async ({
   search = '',
   page = 1,
+  tag = '',
   perPage = PER_PAGE,
 }: {
   search?: string;
   page?: number;
   perPage?: number;
+  tag?: string;
 } = {}): Promise<FetchNotesResponse> => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  const params: Record<string, string | number> = {
+    search,
+    page,
+    perPage,
+  };
+
+  if (tag) {
+    params.tag = tag;
+  }
 
   const { data } = await axios.get<FetchNotesResponse>(
     'https://notehub-public.goit.study/api/notes',
     {
-      params: { search, page, perPage },
+      params,
       headers: { Authorization: `Bearer ${API_KEY}` },
     },
   );
+  return data;
+};
+
+export const fetchNoteById = async (noteId: string): Promise<Note> => {
+  const { data } = await NoteService.get<Note>(`/${noteId}`);
   return data;
 };
 
@@ -50,11 +67,6 @@ export const createNote = async (newNote: {
 export const deleteNote = async (noteId: string) => {
   const { data } = await NoteService.delete<Note>(`/${noteId}`);
   return data as Note;
-};
-
-export const fetchNoteById = async (noteId: string): Promise<Note> => {
-  const { data } = await NoteService.get<Note>(`/${noteId}`);
-  return data;
 };
 
 export type Category = {
