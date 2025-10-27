@@ -1,6 +1,5 @@
 import axios from 'axios';
 import type { Note } from '@/types/note';
-import { NOTES_CATEGORIES } from './constants';
 
 const API_KEY = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 export const PER_PAGE = 12;
@@ -37,17 +36,13 @@ export const fetchNotes = async ({
     perPage,
   };
 
-  if (tag && NOTES_CATEGORIES.includes(tag)) {
+  if (tag) {
     params.tag = tag;
   }
 
-  const { data } = await axios.get<FetchNotesResponse>(
-    'https://notehub-public.goit.study/api/notes',
-    {
-      params,
-      headers: { Authorization: `Bearer ${API_KEY}` },
-    },
-  );
+  const { data } = await NoteService.get<FetchNotesResponse>('', {
+    params,
+  });
   return data;
 };
 
@@ -68,17 +63,4 @@ export const createNote = async (newNote: {
 export const deleteNote = async (noteId: string) => {
   const { data } = await NoteService.delete<Note>(`/${noteId}`);
   return data as Note;
-};
-
-export type Category = {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export const getCategories = async () => {
-  const res = await axios<Category[]>('/categories');
-  return res.data;
 };

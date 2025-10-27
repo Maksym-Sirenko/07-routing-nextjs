@@ -1,32 +1,19 @@
-// app/notes/filter/@sidebar/default.tsx
-'use client';
-
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { ALL_NOTES, NOTES_CATEGORIES } from '@/lib/constants';
+import { ALL_NOTES, TAGS } from '@/lib/constants';
 import css from './default.module.css';
 
 const NotesSidebar = () => {
-  const params = useParams();
-  const currentCategory = params.slug?.[0] || ALL_NOTES;
-
   return (
     <ul className={css.menuList}>
       <li className={css.menuItem}>
-        <Link
-          href="/notes/filter/all"
-          className={`${css.menuLink} ${currentCategory === 'all' ? css.active : ''}`}
-        >
+        <Link href={`/notes/filter/${ALL_NOTES}`} className={`${css.menuLink}`}>
           All notes
         </Link>
       </li>
-      {NOTES_CATEGORIES.map((category) => (
-        <li className={css.menuItem} key={category}>
-          <Link
-            href={`/notes/filter/${category}`}
-            className={`${css.menuLink} ${currentCategory === category ? css.active : ''}`}
-          >
-            {category}
+      {TAGS.map((tag, i) => (
+        <li className={css.menuItem} key={'SideBarMenu' + i}>
+          <Link href={`/notes/filter/${tag}`} className={`${css.menuLink}`}>
+            {tag}
           </Link>
         </li>
       ))}

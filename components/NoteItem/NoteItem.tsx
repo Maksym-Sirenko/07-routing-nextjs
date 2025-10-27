@@ -1,5 +1,3 @@
-// app/components/NoteItem/NoteItem.tsx
-
 import { Note } from '@/types/note';
 import Link from 'next/link';
 import styles from './NoteItem.module.css';
@@ -10,8 +8,10 @@ type Props = {
 
 const NoteItem = ({ item }: Props) => {
   return (
-    <li>
-      <Link href={`/notes/${item.id}`}>{item.title}</Link>
+    <li className={styles.card}>
+      <Link href={`/notes/${item.id}`} className={styles.title}>
+        {item.title}
+      </Link>
     </li>
   );
 };

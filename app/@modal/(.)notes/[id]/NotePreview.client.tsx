@@ -1,4 +1,3 @@
-// app/@modal/(.)notes/[id]/NotePreview.tsx
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
@@ -20,6 +19,7 @@ const NotePreview = () => {
     queryKey: ['note', noteId],
     queryFn: () => fetchNoteById(noteId),
     enabled: !!noteId,
+    refetchOnMount: false,
   });
 
   const handleClose = () => {
@@ -52,8 +52,8 @@ const NotePreview = () => {
   return (
     <Modal onClose={handleClose}>
       <div className={css.container}>
-        <div className={css.header}>
-          <h2 className={css.title}>{note.title}</h2>
+        <div className={css.item}>
+          <h2>{note.title}</h2>
         </div>
         <p className={css.content}>{note.content}</p>
         <div className={css.footer}>
@@ -62,7 +62,7 @@ const NotePreview = () => {
             {new Date(note.createdAt).toLocaleDateString()}
           </span>
         </div>
-        <button onClick={handleClose} className={css.button}>
+        <button onClick={handleClose} className={css.backBtn}>
           Close
         </button>
       </div>
